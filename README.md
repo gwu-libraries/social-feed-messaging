@@ -196,12 +196,12 @@ Tell the scheduler to request some harvest jobs:
 
 #### Observe RabbitMQ
 
-http://<localhost or `boot2docker ip`>:8081/ (The username and password are "guest".)
+http://[localhost or `boot2docker ip`]:8081/ (The username and password are "guest".)
 
 
 #### Observe CouchDB:
 
-http://<localhost or `boot2docker ip`>:5984/_utils/ (The username is "sfmuser" and password is "password".)
+http://[localhost or `boot2docker ip`]:5984/_utils/ (The username is "sfmuser" and password is "password".)
 
 
 ### Republish some warc created messages
