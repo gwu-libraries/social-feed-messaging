@@ -1,0 +1,4 @@
+-e git+https://github.com/pika/pika#egg=pika
+RandomWords
+requests
+pycouchdb

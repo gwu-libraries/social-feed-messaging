@@ -1,0 +1,9 @@
+{
+   "_id": "_design/warc",
+   "language": "javascript",
+   "views": {
+       "collectionid": {
+           "map": "function(doc) {\n  emit(doc.collection_id, 1);\n}"
+       }
+   }
+}

@@ -1,0 +1,45 @@
+sfmrabbit:
+    image: rabbitmq:3-management
+    ports:
+        - "8081:15672"
+    restart: always
+sfmharvester:
+    build: .
+    links:
+        - sfmrabbit:rabbit
+    volumes:
+        - "~/Data/social-feed-messaging:/usr/local/social-feed-messaging"
+    command: bash -c "pip install -r requirements.txt && python appdeps.py --port-wait rabbit:5672 && python rabbit_init.py && python -u fake_harvester.py"
+    restart: always
+sfmindexer:
+    build: .
+    links:
+        - sfmrabbit:rabbit
+    volumes:
+        - "~/Data/social-feed-messaging:/usr/local/social-feed-messaging"
+    command: bash -c "pip install -r requirements.txt && python appdeps.py --port-wait rabbit:5672 && python rabbit_init.py && python -u fake_indexer.py"
+    restart: always
+sfmscheduler:
+    build: .
+    links:
+        - sfmrabbit:rabbit
+    volumes:
+        - "~/Data/social-feed-messaging:/usr/local/social-feed-messaging"
+    command: bash -c "pip install -r requirements.txt && python appdeps.py --port-wait rabbit:5672 && python rabbit_init.py && python -u keep_alive.py"
+    restart: always
+sfmcouch:
+    image: frodenas/couchdb
+    ports:
+      - "5984:5984"
+    environment:
+      - COUCHDB_USERNAME=sfmuser
+      - COUCHDB_PASSWORD=password
+sfmmodellistener:
+    build: .
+    links:
+        - sfmrabbit:rabbit
+        - sfmcouch:couch
+    volumes:
+        - "~/Data/social-feed-messaging:/usr/local/social-feed-messaging"
+    command: bash -c "pip install -r requirements.txt && python appdeps.py --port-wait rabbit:5672 --port-wait couch:5984 && python rabbit_init.py && python couch_init.py && python -u fake_model_listener.py"
+    restart: always
