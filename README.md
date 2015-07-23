@@ -161,7 +161,13 @@ This is not intended to be a complete list of services / applications that would
 
 1.  Install docker (or boot2docker for OS X) and docker-compose.
 2.  Clone this repo.
-3.  Bring up the containers:
+3.  Change the volumes configuration in docker-compose.yml to point to your cloned repo:
+
+                    volumes:
+                        - "~/Data/social-feed-messaging:/usr/local/social-feed-messaging"
+                        
+    Note that there are multiple instances of the volumes configuration.
+4.  Bring up the containers:
 
 		GLSS-F0G5RP:social-feed-messaging justinlittman$ docker-compose up -d
 		Creating socialfeedmessaging_sfmcouch_1...
@@ -171,7 +177,7 @@ This is not intended to be a complete list of services / applications that would
 		Creating socialfeedmessaging_sfmindexer_1...
 		Creating socialfeedmessaging_sfmharvester_1...
 
-4.  If you want to add multiple instance of the harvester service:
+5.  If you want to add multiple instance of the harvester service:
 
 		GLSS-F0G5RP:social-feed-messaging justinlittman$ docker-compose scale sfmharvester=2
 		Starting socialfeedmessaging_sfmharvester_2...
